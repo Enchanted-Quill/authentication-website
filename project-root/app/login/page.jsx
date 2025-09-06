@@ -36,39 +36,51 @@ export default function Login() {
   };
 
   return (
-        <div className="flex justify-center items-center h-screen bg-gray-900 text-white">
-      <form onSubmit={handleLogin} className="bg-gray-800 p-6 rounded-lg shadow-lg w-80">
-        <h1 className="text-xl font-bold mb-4 text-center">Login</h1>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-[#001935] to-[#001245] font-sans">
+      <form
+        onSubmit={handleLogin}
+        className="flex flex-col items-center w-96"
+      >
+      {/* Title */}
+      <h1 className="text-3xl font-bold mb-8 text-white drop-shadow-md">
+        Log In
+      </h1>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-2 mb-3 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-2 mb-3 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+      {/* Email input */}
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full px-4 py-3 mb-4 rounded-2xl bg-gradient-to-b from-gray-100 to-gray-300 placeholder-gray-500 text-gray-800 shadow-inner focus:outline-none"
+      />
 
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
-        >
-          Login
-        </button>
 
-        <Link href="/register" className="block mt-4 text-blue-400 hover:underline text-center">
-          Go to Registration
-        </Link>
+      {/* Password input */}
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="w-full px-4 py-3 mb-6 rounded-2xl bg-gradient-to-b from-gray-100 to-gray-300 placeholder-gray-500 text-gray-800 shadow-inner focus:outline-none"
+      />
 
-        {message && <p className="mt-3 text-center">{message}</p>}
-      </form>
-    </div>
+
+      {/* Sign Up button */}
+      <button
+        type="submit"
+        className="w-40 py-3 rounded-2xl text-lg font-semibold bg-gradient-to-b from-teal-400 to-teal-700 text-white shadow-lg hover:scale-105 transition-transform"
+      >
+        Log In
+      </button>
+
+
+      {/* Message box */}
+      {message && (
+        <p className="mt-4 text-center text-white drop-shadow-md">{message}</p>
+      )}
+    </form>
+  </div>
   );
 }

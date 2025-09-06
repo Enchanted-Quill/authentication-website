@@ -1,31 +1,39 @@
-import Image from "next/image";
 import Link from "next/link";
 
-export default function Home(){
+export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">
-        Funnify: Make Anything Funny
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#001935] to-[#001245] text-white font-sans">
+      {/* Title */}
+      <h1
+        className="text-6xl font-extrabold mb-4"
+        style={{
+          fontFamily: "Inter, sans-serif",
+          background: "linear-gradient(90deg, #00C853, #00E5FF, #9C27B0)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          textShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)",
+        }}
+      >
+        FUNNIFY
       </h1>
 
-      <nav className="space-y-4">
+      {/* Subtitle */}
+      <p className="text-xl mb-12 font-medium drop-shadow-md">
+        Make anything funny.
+      </p>
+
+      {/* Buttons */}
+      <nav className="space-y-6 w-48">
         <Link
           href="/register"
-          className="block px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+          className="block w-full py-3 rounded-2xl text-center text-lg font-semibold bg-gradient-to-b from-teal-400 to-teal-700 shadow-lg hover:scale-105 transition-transform"
         >
-          Register
-        </Link>
-
-        <Link
-          href="/protected"
-          className="block px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
-        >
-          Locked Page 🔒
+          Sign Up
         </Link>
 
         <Link
           href="/login"
-          className="block px-6 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition"
+          className="block w-full py-3 rounded-2xl text-center text-lg font-semibold bg-gradient-to-b from-teal-400 to-teal-700 shadow-lg hover:scale-105 transition-transform"
         >
           Log In
         </Link>

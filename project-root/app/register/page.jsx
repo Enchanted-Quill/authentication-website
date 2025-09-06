@@ -43,42 +43,51 @@ export default function Register() {
   };
 
   return (
-    // Outer container that centers the form on the page
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      
-      {/* The form box */}
-      <form onSubmit={handleRegister} className="bg-white p-6 rounded-lg shadow-md w-80">
-        <h1 className="text-xl font-bold mb-4 text-center">Register</h1>
-        
-        {/* Email input field */}
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-2 mb-3 border rounded"
-          value={email} // current email value
-          onChange={(e) => setEmail(e.target.value)} // update email
-        />
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-[#001935] to-[#001245] font-sans">
+      <form
+        onSubmit={handleRegister}
+        className="flex flex-col items-center w-96"
+      >
+      {/* Title */}
+      <h1 className="text-3xl font-bold mb-8 text-white drop-shadow-md">
+        Register
+      </h1>
 
-        {/* Password input field */}
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-2 mb-3 border rounded"
-          value={password} // current password value
-          onChange={(e) => setPassword(e.target.value)} // update password
-        />
 
-        {/* Sign Up button */}
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-        >
-          Sign Up
-        </button>
+      {/* Email input */}
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full px-4 py-3 mb-4 rounded-2xl bg-gradient-to-b from-gray-100 to-gray-300 placeholder-gray-500 text-gray-800 shadow-inner focus:outline-none"
+      />
 
-        {/* Message box for errors or success */}
-        {message && <p className="mt-3 text-center">{message}</p>}
-      </form>
-    </div>
+
+      {/* Password input */}
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="w-full px-4 py-3 mb-6 rounded-2xl bg-gradient-to-b from-gray-100 to-gray-300 placeholder-gray-500 text-gray-800 shadow-inner focus:outline-none"
+      />
+
+
+      {/* Sign Up button */}
+      <button
+        type="submit"
+        className="w-40 py-3 rounded-2xl text-lg font-semibold bg-gradient-to-b from-teal-400 to-teal-700 text-white shadow-lg hover:scale-105 transition-transform"
+      >
+        Sign Up
+      </button>
+
+
+      {/* Message box */}
+      {message && (
+        <p className="mt-4 text-center text-white drop-shadow-md">{message}</p>
+      )}
+    </form>
+  </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/firebase';
 import { useRouter } from 'next/navigation';
 
@@ -12,12 +12,9 @@ export default function Protected() {
   const [query, setQuery] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  // NEW: conversation slots
   const [conversations, setConversations] = useState([]);
   const [activeSlot, setActiveSlot] = useState(null);
 
-  // Auth
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (!currentUser) router.push('/login');
@@ -26,7 +23,6 @@ export default function Protected() {
     return () => unsubscribe();
   }, [router]);
 
-  // Load slots when user changes
   useEffect(() => {
     if (!user) return;
     const fetchSlots = async () => {
@@ -37,7 +33,6 @@ export default function Protected() {
     fetchSlots();
   }, [user]);
 
-  // Load messages when slot changes
   useEffect(() => {
     if (!user || !activeSlot) return;
     const fetchMessages = async () => {
@@ -46,11 +41,6 @@ export default function Protected() {
     };
     fetchMessages();
   }, [user, activeSlot]);
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    router.push('/login');
-  };
 
   const newConversation = async () => {
     const res = await axios.post('/api/conversation_new', { uid: user.uid });
@@ -91,21 +81,23 @@ export default function Protected() {
   };
 
   return (
-    <div className="min-h-screen bg-green-50 flex">
-      {/* Sidebar for slots */}
-      <div className="w-64 bg-white border-r p-4">
+    <div className="min-h-screen flex bg-gradient-to-b from-[#001935] to-[#001245] text-white">
+      {/* Sidebar */}
+      <div className="w-64 bg-gradient-to-b from-gray-100 to-gray-300 p-4 shadow-lg">
         <button
           onClick={newConversation}
-          className="mb-4 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+          className="mb-4 w-full py-3 rounded-2xl text-lg font-semibold bg-gradient-to-b from-teal-400 to-teal-700 text-white shadow-lg hover:scale-105 transition-transform"
         >
           + New Chat
         </button>
         {conversations.map((c) => (
           <div
-            key={c._id.toString()} // ✅ always unique from MongoDB
+            key={c._id.toString()}
             onClick={() => setActiveSlot(c.slotId)}
-            className={`p-2 rounded cursor-pointer mb-2 ${
-              activeSlot === c.slotId ? 'bg-blue-300' : 'bg-gray-200'
+            className={`p-3 rounded-xl cursor-pointer mb-3 transition-transform hover:scale-105 shadow-md font-sans ${
+              activeSlot === c.slotId
+                ? 'bg-gradient-to-b from-[#A8D4FF] to-[#6EB7FF] text-black'
+                : 'bg-gradient-to-b from-gray-200 to-gray-400 text-gray-900'
             }`}
           >
             {c.name || `Conversation ${c.slotId}`}
@@ -113,52 +105,46 @@ export default function Protected() {
         ))}
       </div>
 
-      {/* Main chat area */}
-      <div className="flex-1 p-6 flex flex-col items-center">
-        <div className="max-w-xl w-full bg-white rounded shadow p-6 mb-4">
-          <h1 className="text-xl font-bold mb-2 text-center">🔒 Protected Page</h1>
-          {user && <p className="mb-4 text-center">Welcome, <strong>{user.email}</strong>!</p>}
-          <button
-            onClick={handleLogout}
-            className="mb-6 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
-          >
-            Logout
-          </button>
+      {/* Main Chat Area */}
+      <div className="flex-1 p-6 flex flex-col">
+        <h1 className="text-2xl font-bold mb-2 text-center drop-shadow-md text-white">The Magic Page</h1>
+        {user && <p className="mb-4 text-center text-white">Welcome, <strong>{user.email}</strong>!</p>}
 
-          {/* Messages */}
-          <div className="mb-4 max-h-64 overflow-y-auto border p-4 rounded bg-gray-100">
-            {messages.length === 0 && <p className="text-center text-gray-500">Start chatting...</p>}
-            {messages.map((msg, i) => (
-              <pre
-                key={i}
-                className={`whitespace-pre-wrap mb-2 p-2 rounded ${
-                  msg.sender === 'user' ? 'bg-blue-200 text-blue-900' : 'bg-gray-200 text-gray-900'
-                }`}
-              >
-                <strong>{msg.sender === 'user' ? 'You' : 'GROQ Bot'}:</strong> {msg.text}
-              </pre>
-            ))}
-          </div>
-
-          {/* Input */}
-          <form onSubmit={sendQuery} className="flex space-x-2">
-            <input
-              type="text"
-              placeholder="Enter GROQ query"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="flex-grow p-2 border rounded"
-              disabled={loading}
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:opacity-50"
+        {/* Messages */}
+        <div className="flex-1 mb-4 overflow-y-auto p-4">
+          {messages.length === 0 && <p className="text-center text-gray-300">Start chatting...</p>}
+          {messages.map((msg, i) => (
+            <pre
+              key={i}
+              className={`whitespace-pre-wrap mb-2 p-3 rounded-xl shadow-md font-sans ${
+                msg.sender === 'user'
+                  ? 'bg-gradient-to-b from-[#A8D4FF] to-[#6EB7FF] text-black'
+                  : 'bg-gradient-to-b from-gray-200 to-gray-300 text-gray-900'
+              }`}
             >
-              Send
-            </button>
-          </form>
+              <strong>{msg.sender === 'user' ? 'You' : 'GROQ Bot'}:</strong> {msg.text}
+            </pre>
+          ))}
         </div>
+
+        {/* Input */}
+        <form onSubmit={sendQuery} className="flex space-x-3">
+          <input
+            type="text"
+            placeholder="Ask Anything"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="flex-grow px-4 py-3 rounded-2xl bg-gradient-to-b from-gray-100 to-gray-300 placeholder-gray-500 text-gray-800 shadow-inner focus:outline-none"
+            disabled={loading}
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="px-6 py-3 rounded-2xl text-lg font-semibold bg-gradient-to-b from-teal-400 to-teal-700 text-white shadow-lg hover:scale-105 transition-transform disabled:opacity-50"
+          >
+            Send
+          </button>
+        </form>
       </div>
     </div>
   );
